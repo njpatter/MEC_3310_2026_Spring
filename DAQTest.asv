@@ -1,0 +1,7 @@
+close all;clear all; clc
+
+daqlist;
+mDaq = daq("ni") 
+mDaq.Rate = 10000;
+
+mChannel = mDaq.addinput("Dev4", 

@@ -1,47 +1,46 @@
-instrreset; clear all; close all; clc
+clear all; close all; clc
 
 mylist = daqlist;
 myId = mylist.DeviceID;
 myDaq = daq('ni');
 myDaq.Rate = 1000;
 
-vgzn = 1.493075226803203;
-vgzp = 1.095203956033045;
-vgzo = (vgzn + vgzp)/2;
-vgzs = -(vgzn - vgzp)/2;
 
-vgxo = (1.467609437501021 + 1.076017953213865) / 2;
-vgxs = -(1.467609437501021 - 1.076017953213865) / 2;
-
-vgyo = (1.462486701030433 + 1.068082531369736) / 2;
-vgys = -(1.462486701030433 - 1.068082531369736) / 2;
-
-for i=0:3
+for i=0:1
     ch(i+1) = myDaq.addinput(myId, "ai"+string(i), "Voltage");
     ch(i+1).Range = [-5 5];
     ch(i+1).TerminalConfig = "SingleEnded";
 end
 
+s = input("Position in X-0g orientation and hit enter");
+[data, time] = myDaq.read(seconds(3), "OutputFormat","Matrix");
+avgVals = mean(data)
+Xoffset = avgVals(1);
+Ycombo = avgVals(2);
 
-%[data, time] = myDaq.read(seconds(3), "OutputFormat","Matrix");
-%avgVals = mean(data)
+s = input("Position in X+1g orientation and hit enter");
+[data, time] = myDaq.read(seconds(3), "OutputFormat","Matrix");
+avgVals = mean(data)
+Xcombo = avgVals(1);
+Yoffset = avgVals(2);
+
+sx = Xcombo - Xoffset;
+sy = Ycombo - Yoffset;
 
 myDaq.start("continuous")
 pause(1)
 tic
-while toc < 20
+while toc < 30
     %seconds(3)
     pause(0.3)
     [data, time] = myDaq.read("all", "OutputFormat","Matrix");
     avgVals = mean(data);
-    az = (avgVals(3) - vgzo) / vgzs;
-    ay = (avgVals(2) - vgyo) / vgys;
-    ax = (avgVals(1) - vgxo) / vgxs;
-    quiver3(0,0,0, ax, ay, az)
-    xlim([-5 5])
-    xlim([-5 5])
-    xlim([-5 5])
+    ax = (avgVals(1) -  Xoffset) / sx);
+    ay = (avgVals(2) - Yoffset) / sy);
+    atan2d
 end
 %plot(time, data)
 mean(data)
  
+
+clear all; close all

@@ -9,9 +9,9 @@ function [frequencies,amplitudes] = BetterFFT(data, samplingFreq, shouldSort, th
     L = length(data);
     Y = fft(data);
     P2 = abs(Y/L);
-    amplitudes = P2(1:L/2 + 1);
+    amplitudes = P2(1:int32(L/2) + 1);
     amplitudes(2:end-1) = 2*amplitudes(2:end-1);
-    frequencies = samplingFreq / L * (0:(L/2));
+    frequencies = samplingFreq / L * (0:int32(L/2));
 
     if shouldSort 
         [sortedAmps, indices] = sort(amplitudes, 'descend');

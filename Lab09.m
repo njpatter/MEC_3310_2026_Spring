@@ -7,7 +7,7 @@ mdaq.Rate = 1000;
 
 ch = mdaq.addinput(mid, 'ai0', 'Voltage');
 ch.Range = [-5 5];
-ch.TerminalConfig = "SingleEnded"
+ch.TerminalConfig = "SingleEnded";
 
 s = "";
 while true
@@ -16,7 +16,7 @@ while true
         break
     end
     [data, time ] = mdaq.read(seconds(2), "OutputFormat", "Matrix");
-    data = 0; %mean(data);
+    data = mean(data);
     disp(string(data) + " Volts")
 end
 disp("Program stopped")

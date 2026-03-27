@@ -11,7 +11,7 @@ ch = mDaq.addinput(mId, "ai0", "Voltage");
 ch.TerminalConfig = "Differential";
 ch.Range = [-5 5];
 
-[data, time] = mDaq.read(seconds(6), "OutputFormat","Matrix");
+[data, time] = mDaq.read(seconds(3), "OutputFormat","Matrix");
 data = data;
 
 [f, P1] = BetterFFT(data, samplingFreq, true);

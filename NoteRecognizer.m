@@ -4,7 +4,7 @@ noteFrequencies = [16.35    17.32    18.35    19.45    20.6    21.83    23.12   
 
 notes = [];
 for f = frequencies
-     [minVal, index] = min(abs(noteFrequencies - f));
+     [minVal, index] = min(abs(noteFrequencies - double(f)));
      notes = [notes noteNames(index)];
 end
 
